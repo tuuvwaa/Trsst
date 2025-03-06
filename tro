@@ -294,20 +294,31 @@ OtherTab:AddButton({
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/ScriptMaru/refs/heads/main/MaruHubPremium.Lua"))()
     end
 })
-ChestTab:AddToggle("Kill Aura", {
+ChestTab:AddToggle("TuanAnhIOS_Toggle", {
     Title = "Click Đánh Quái",
     Description = "Bật/Tắt Click Đánh",
-    Callback = function(Value)
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/Click/refs/heads/main/ClickDanh"))()
+    Callback = function(value)
+        _G.TuanAnhIOS_Enabled = value
+
+        if value then
+            -- Bật script (chạy trên luồng riêng)
+            ScriptThread = task.spawn(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/Click/refs/heads/main/ClickDanh"))()
+            end)
+        else
+            -- Dừng script bằng cách hủy luồng
+            if ScriptThread then
+                task.cancel(ScriptThread)
+                ScriptThread = nil
+            end
         end
     end
 })
-FixTab:AddToggle("Kill Aura", {
+FixTab:AddButton({
     Title = "Xoá Sương Mù",
-    Description = "Bật/Tắt Xoá Sương Mù",
-    Callback = function(Value)
+    Description = "",
+    Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/XoaSuongMu/refs/heads/main/SuongMu.lua"))()
-        end
     end
 })
 FruitTab:AddButton({
